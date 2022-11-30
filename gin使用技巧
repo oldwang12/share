@@ -1,0 +1,25 @@
+```go
+gin.ForceConsoleColor() 强制颜色输出
+gin.DisableConsoleColor() 禁用颜色输出
+
+// 禁止 "/manager/v1/health" 路径日志输出
+route.Use(gin.LoggerWithWriter(gin.DefaultWriter, "/manager/v1/health"))
+
+// 自定义日志
+func logFormat() gin.HandlerFunc {
+	return gin.LoggerWithFormatter(func(param gin.LogFormatterParams) string {
+		// your custom format
+		return fmt.Sprintf("%s - [%s] \"%s %s %s %d %s \"%s\" %s\"\n",
+			param.ClientIP,
+			param.TimeStamp.Format(time.RFC1123),
+			param.Method,
+			param.Path,
+			param.Request.Proto,
+			param.StatusCode,
+			param.Latency,
+			param.Request.UserAgent(),
+			param.ErrorMessage,
+		)
+	})
+}
+```
